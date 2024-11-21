@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hoja de Vida - Catalina Sedano Rincón</title>
+  <!-- Enlace a Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEJYF4l4hspKA7ty0aC6eB4fnwA2zH2MzM2r2zPslB7fdxHv0Z6h4g6sPp6tm" crossorigin="anonymous">
+  <style>
+    body {
+      background: #f8f9fa;
+      font-family: 'Arial', sans-serif;
+    }
+
+    /* Sección hero (nombre y descripción centrados) */
+    .hero-section {
+      background-color: cadetblue; /* Cadet Blue */
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+      border-radius: 10px;
+    }
+    .hero-section h1 {
+      font-size: 3rem;
+      font-weight: bold;
+    }
+    .hero-section p {
+      font-size: 1.2rem;
+      margin-top: 15px;
+    }
+
+    /* Estilo para las cajas de información (iconos y contenido al lado) */
+    .info-box {
+      display: flex;
+      align-items: center;
+      background-color: #e0f7fa; /* Azul claro */
+      padding: 5px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+    .info-box:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .info-box i {
+      font-size: 2.5rem;
+      margin-right: 20px;
+      color: #00796b; /* Verde oscuro */
+    }
+
+    .info-box h4 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .info-box-content {
+      font-size: 1rem;
+      color: #34495e; /* Gris oscuro */
+    }
+
+    /* Estilo para el botón de los proyectos */
+    .btn-proyecto {
+      background-color: cadetblue; /* Cadet Blue */
+      color: white;
+      font-size: 1rem;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      text-transform: uppercase;
+      margin-top: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-proyecto:hover {
+      background-color: #00796b; /* Verde oscuro */
+    }
+
+    /* Sección de tarjetas con datos personales, habilidades, etc. */
+    .hoja-vida .card {
+      margin-top: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .hoja-vida .card-body {
+      background: #ecf0f1;
+    }
+    .hoja-vida .card-header {
+      background-color: cadetblue; /* Cadet Blue */
+      color: #fff;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+    .logo-uni {
+            height: 50px; /* Ajusta el tamaño de la imagen */
+            margin-left: 40px; /* Espacio entre el texto y la imagen */
+            vertical-align: middle; /* Alinea la imagen con el texto */
+          }
+
+  </style>
+</head>
+<body>
+
+  <div class="hero-section">
+    <h1>Catalina Sedano Rincón</h1>
+    <p>Estudiante de Ingeniería de Sistemas en la Universidad El Bosque, comprometida con la innovación tecnológica y la resolución de problemas complejos. <br> Mi enfoque está en aplicar los conocimientos adquiridos para enfrentar los desafíos del entorno empresarial y social.</p>
+   
+  </div>
+
+  <!-- Contenedor principal -->
+  <div class="container hoja-vida">
+    <div class="row">
+      <div class="col-12">
+        <h2 class="text-center">Secciones de Información</h2>
+        <hr>
+      </div>
+    </div>
+
+    <!-- Íconos interactivos con información al lado -->
+    <div class="row">
+
+
+        <div class="col-md-4">
+            <div class="info-box">
+              <i class="bi bi-graduation-cap"></i>
+              <div>
+                <h4>Educación</h4>
+                <div class="info-box-content">
+                  <ul>
+                    <li>
+                      <strong>Ingeniería de Sistemas</strong> - 
+                      <span>Universidad El Bosque</span> 
+                      (2022-Actualidad)  <img src="https://esici.edu.co/wp-content/uploads/2021/05/Logo_de_la_Universidad_El_Bosque.svg.png" alt="Logo de la Universidad El Bosque" class="logo-uni">
+                    </li>
+                    <li><strong>Semestre:</strong> Sexto</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+      <!-- Habilidades -->
+      <div class="col-md-4">
+        <div class="info-box">
+          <i class="bi bi-braces"></i>
+          
+          <div>
+            <h4>Habilidades</h4>
+            <div class="info-box-content">
+              <ul>
+                <li>Programación en <strong>Java</strong>, <strong>Python</strong></li>
+                <li>Desarrollo web (HTML, CSS, JavaScript)</li>
+                <li>Bases de datos SQL y NoSQL</li>
+                <li>Metodologías ágiles (Scrum)</li>
+                <li>Conocimientos en redes de datos</li>
+                <li>Conocimientos en Gestion de proyectos</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Proyectos -->
+      <div class="col-md-4">
+        <div class="info-box">
+          <i class="bi bi-briefcase"></i>
+          <div>
+            <h4>Proyecto destacado</h4>
+            <div class="info-box-content">
+              <ul>
+                <li><strong>La calculadora IPv4</strong> permite ingresar una dirección IP y una máscara de subred en formato X.X.X.X para realizar diversos cálculos, como obtener la IP de red y la IP de broadcast, <br> así como determinar la cantidad de IP útiles y el rango de IP útiles. También muestra la clase de la IP (A, B, C, D o E) y si la dirección es pública o privada. <br> Además, ofrece una representación binaria de la IP y la máscara, destacando visualmente las porciones correspondientes a la red y al host con diferentes colores.</li>
+              </ul>
+              <!-- Botón para el proyecto de calculadora -->
+            <br> <a href="calculadora.html" class="btn-proyecto">Calculadora IPv4</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- Sección de datos personales -->
+    <div class="row">
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-header">Datos de contacto</div>
+          <div class="card-body">
+            <ul>
+              <li><strong>Email personal:</strong> catalinitase@gmail.com</li>
+              <li><strong>Email institucional:</strong> csedano@unbosque.edu.co</li>
+              <li><strong>Celular:</strong> 3212301733</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Script de Bootstrap 5 -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybFf1j1ZJ3kRrWsD0o3p3Z2kFwD3EMd2LRc6DZDlTkTrgV4u6z" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-pzjw8f+ua7Kw1TIq0Fp4f06pEw8ZmHOSk9vYB8kY2CkF9Yw4p3V0v5fNCI56P9T8" crossorigin="anonymous"></script>
+</body>
+</html>

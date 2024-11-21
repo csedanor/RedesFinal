@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora IPv4</title>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: cadetblue;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: white;
+      padding: 50px;
+      border-radius: 80px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      max-width: 620px;
+      width: 100%;
+      transition: transform 0.3s;
+    }
+
+    .container:hover {
+      transform: translateY(-5px);
+    }
+
+    h1 {
+      text-align: center;
+      color: black;
+      margin-bottom: 15px;
+      font-size: 40px;
+      font-family: 'Arial', sans-serif;
+      font-weight: bold;
+      animation: buttonMove 2s infinite alternate;
+    }
+
+    @keyframes buttonMove {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-10px); }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    label {
+      font-weight: bold;
+      color: #719;
+    }
+
+    input[type="text"] {
+      padding: 12px;
+      border: 10px solid #ddd;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus {
+      border-color: cadetblue;
+      outline: none;
+    }
+
+    input[type="submit"], #botonVolver {
+      padding: 12px;
+      background-color: cadetblue;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      font-weight: bold;
+    }
+
+    input[type="submit"]:hover, #botonVolver:hover {
+      background-color: cadetblue;
+    }
+
+    .resultado {
+      background-color: #f8f8f8;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 5px;
+      margin: 1px 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      font-size: 14px;
+    }
+
+    .resultado h3 {
+      margin: 0 0 3px;
+      color: #719;
+      font-size: 14px;
+    }
+
+    .visualizacion-binaria {
+      font-family: monospace;
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    .rojo {
+      color: red;
+    }
+
+    .verde {
+      color: green;
+    }
+
+    .azul {
+      color: blue;
+    }
+
+    .leyenda {
+      margin-top: 10px;
+      font-family: monospace;
+      text-align: center;
+      display: none;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Calculadora de IPv4</h1>
+    <form id="formIp">
+      <label for="ip">Dirección IP (formato X.X.X.X):</label>
+      <input type="text" id="ip" required placeholder="Ejemplo: 192.168.1.1">
+
+      <label for="mask">Máscara de Subred (formato X.X.X.X):</label>
+      <input type="text" id="mask" required placeholder="Ejemplo: 255.255.255.0">
+
+      <input type="submit" value="Calcular">
+    </form>
+
+    <div id="resultado" style="display: none;"></div>
+
+    <div id="visualizacionBinaria" class="visualizacion-binaria"></div>
+
+    <div id="leyenda" class="leyenda">
+      <span class="rojo">Red</span> | <span class="azul">Subred</span> | <span class="verde">Host</span>
+      <button id="botonVolver" style="display: none;">Volver</button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('formIp').addEventListener('submit', function (event) {
+      event.preventDefault(); // Evitar el envío del formulario
+
+      const ipInput = document.getElementById('ip');
+      const maskInput = document.getElementById('mask');
+
+      let valid = true;
+
+      // Validación de la IP
+      if (!isValidIp(ipInput.value)) {
+        alert('Por favor, ingrese una dirección IP válida.');
+        valid = false;
+      }
+
+      // Validación de la máscara
+      if (!isValidIp(maskInput.value)) {
+        alert('Por favor, ingrese una máscara válida.');
+        valid = false;
+      }
+
+      if (!valid) return;
+
+      const ip = ipInput.value;
+      const mascara = maskInput.value;
+
+      const ipRed = calcularIpRed(ip, mascara);
+      const ipBroadcast = calcularIpBroadcast(ip, mascara);
+      const cantidadHosts = calcularHosts(mascara) - 2;
+      const rangoIp = calcularRangoIp(ipRed, ipBroadcast);
+      const claseIp = determinarClaseIp(ip);
+      const esPrivada = esIpPrivada(ip);
+      const porcionBinaria = calcularPorcionBinaria(ip, mascara);
+
+      document.getElementById('resultado').innerHTML = `
+        <div class="resultado"><h3>IP de Red</h3><p>${ipRed}</p></div>
+        <div class="resultado"><h3>IP de Broadcast</h3><p>${ipBroadcast}</p></div>
+        <div class="resultado"><h3>Cantidad de IP útiles</h3><p>${cantidadHosts}</p></div>
+        <div class="resultado"><h3>Rango de IP útiles</h3><p>${rangoIp.inicio} - ${rangoIp.fin}</p></div>
+        <div class="resultado"><h3>Clase de IP</h3><p>${claseIp}</p></div>
+        <div class="resultado"><h3>IP Pública o Privada</h3><p>${esPrivada ? 'Privada' : 'Pública'}</p></div>
+      `;
+
+      document.getElementById('visualizacionBinaria').innerHTML = `Binario: ${porcionBinaria}`;
+      document.getElementById('leyenda').style.display = 'block';
+      document.getElementById('resultado').style.display = 'block';
+      document.getElementById('botonVolver').style.display = 'block';
+      document.getElementById('formIp').style.display = 'none';
+    });
+
+    document.getElementById('botonVolver').addEventListener('click', function () {
+      document.getElementById('resultado').style.display = 'none';
+      document.getElementById('botonVolver').style.display = 'none';
+      document.getElementById('formIp').style.display = 'flex';
+      document.getElementById('ip').value = '';
+      document.getElementById('mask').value = '';
+      document.getElementById('visualizacionBinaria').innerHTML = '';
+      document.getElementById('leyenda').style.display = 'none';
+    });
+
+    function isValidIp(ip) {
+      const partes = ip.split('.');
+      return partes.length === 4 && partes.every(parte => {
+        const numero = Number(parte);
+        return !isNaN(numero) && numero >= 0 && numero <= 255;
+      });
+    }
+
+    function calcularIpRed(ip, mascara) {
+      return ip.split('.').map((parte, i) => parte & mascara.split('.')[i]).join('.');
+    }
+
+    function calcularIpBroadcast(ip, mascara) {
+      return ip.split('.').map((parte, i) => parte | (~mascara.split('.')[i] & 255)).join('.');
+    }
+
+    function calcularHosts(mascara) {
+      const cuentaCeros = mascara.split('.').map(parte => (~parte & 255).toString(2).padStart(8, '0')).join('').split('1').length - 1;
+      return 2 ** cuentaCeros;
+    }
+
+    function calcularRangoIp(ipRed, ipBroadcast) {
+      const inicio = ipRed.split('.').map((num, i) => i === 3 ? +num + 1 : +num).join('.');
+      const fin = ipBroadcast.split('.').map((num, i) => i === 3 ? +num - 1 : +num).join('.');
+      return { inicio, fin };
+    }
+
+    function determinarClaseIp(ip) {
+      const octeto = +ip.split('.')[0];
+      return octeto <= 126 ? 'A' : octeto <= 191 ? 'B' : octeto <= 223 ? 'C' : octeto <= 239 ? 'D' : 'E';
+    }
+
+    function esIpPrivada(ip) {
+      const [oct1, oct2] = ip.split('.').map(Number);
+      return (oct1 === 10 || (oct1 === 172 && oct2 >= 16 && oct2 <= 31) || (oct1 === 192 && oct2 === 168));
+    }
+// Función para calcular la representación binaria
+function calcularPorcionBinaria(ip, mascara) {
+  const partesIp = ip.split('.').map(Number);
+  const partesMascara = mascara.split('.').map(Number);
+
+  // Convertir las partes de la IP y la máscara a binario
+  let binarioIp = partesIp.map(parte => parte.toString(2).padStart(8, '0')).join('');
+  let binarioMascara = partesMascara.map(parte => parte.toString(2).padStart(8, '0')).join('');
+
+  let parteRed = '';
+  let parteHost = '';
+
+  // Recorrer cada bit para determinar la parte de la red y del host
+  for (let i = 0; i < 32; i++) {
+    if (binarioMascara[i] === '1') {
+      // Si la máscara tiene '1', es parte de la red
+      parteRed += `<span class="rojo">${binarioIp[i]}</span>`;
+    } else {
+      // Si la máscara tiene '0', es parte del host
+      parteHost += `<span class="verde">${binarioIp[i]}</span>`;
+    }
+
+    // Agregar un punto cada 8 bits para separar los octetos
+    if (i % 8 === 7) {
+      if (i < 31) { // Para evitar un punto extra al final
+        parteRed += '.';
+        parteHost += '.';
+      }
+    }
+  }
+
+  // Devolver el HTML con la visualización de la IP y la máscara en binario
+  return `IP: ${parteRed} | Máscara: ${parteHost}`;
+}
+
+  </script>
+</body>
+</html>
